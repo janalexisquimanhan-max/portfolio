@@ -148,6 +148,7 @@
             </div>
 
             <div class="skill-card">
+                
                 <div class="skill-icon">🚀</div>
                 <h3>WordPress & CMS</h3>
                 <p>Crafting custom themes, page templates, routing, responsive layouts, and content management workflows.</p>
