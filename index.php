@@ -83,17 +83,18 @@
             foreach ($members as $m_id => $m_data) :
                 $img_file = get_template_directory() . '/images/' . $m_data['image'];
                 $img_url  = file_exists($img_file)
-                    ? get_template_directory_uri() . '/images/' . $m_data['image']
+                    ? get_template_directory_uri() . '/images/' . rawurlencode($m_data['image']) . '?v=2'
                     : ($m_data['placeholder'] ?? 'https://placehold.co/400x450/6842a6/ffffff?text=' . urlencode($m_data['name']));
                 $profile_url = function_exists('team_portfolio_get_member_url')
                     ? team_portfolio_get_member_url($m_id)
                     : add_query_arg(array('view' => 'member', 'member' => $m_id), home_url('/'));
             ?>
-                <div class="member-card">
-                    <div class="member-photo-wrap">
+                <div class="member-card member-card--<?php echo esc_attr($m_data['theme'] ?? 'default'); ?>">
+                    <div class="member-photo-wrap member-photo-wrap--<?php echo esc_attr($m_data['theme'] ?? 'default'); ?>">
                         <img src="<?php echo esc_url($img_url); ?>"
                              alt="<?php echo esc_attr($m_data['name']); ?>">
                         <span class="member-card-badge"><?php echo esc_html($m_data['role']); ?></span>
+                        <span class="member-interest"><?php echo esc_html($m_data['interest'] ?? ''); ?></span>
                     </div>
 
                     <div class="member-info">
@@ -244,33 +245,69 @@
 <section class="section-contact" id="contact">
     <div class="container">
 
-        <div class="section-title">
-            <span class="section-tag">✦ LET'S CONNECT ✦</span>
+        <div class="section-title contact-heading">
             <h2>Contact Us</h2>
-            <p>Have a question or want to collaborate with Team UNCHAKA?</p>
+            <p>Any question or remarks? Just write us a message!</p>
         </div>
 
-        <div class="contact-box">
-            <div class="contact-icon-large">✉️</div>
-            <h3>We Would Love to Hear From You</h3>
-            <p class="contact-intro">
-                Whether you have an inquiry, feedback, or a collaborative project opportunity,
-                our team is ready to connect.
-            </p>
+        <?php if (isset($_GET['contact']) && is_string($_GET['contact']) && sanitize_key(wp_unslash($_GET['contact'])) === 'sent') : ?>
+            <p class="contact-success" role="status">Thanks for reaching out. Your message has been sent.</p>
+        <?php endif; ?>
 
-            <a href="mailto:janalexisquimanhan@gmail.com" class="btn contact-btn">
-                Send an Email →
-            </a>
+        <div class="contact-panel">
+            <aside class="contact-details">
+                <h3>Contact Information</h3>
+                <p class="contact-details-intro">We'd love to hear from you. Send us a message and we'll get back to you.</p>
 
-            <div class="contact-quick-links">
-                <a href="#members" class="contact-link">Explore Members</a>
-                <span class="dot">•</span>
-                <a href="#projects" class="contact-link">View Projects</a>
-                <span class="dot">•</span>
-                <a href="<?php echo esc_url(function_exists('team_portfolio_get_welcome_url') ? team_portfolio_get_welcome_url() : home_url('/')); ?>" class="contact-link">3D Welcome</a>
-            </div>
+                <div class="contact-detail">
+                    <span class="contact-detail-icon" aria-hidden="true">✉</span>
+                <a href="mailto:TEAMUNCHAKA@gmail.com">TEAMUNCHAKA@gmail.com</a>
+                </div>
 
-            <p class="contact-thanks">Thank you for visiting Team UNCHAKA's Portfolio!</p>
+                <div class="contact-quick-links">
+                    <a href="#members">Explore members</a>
+                    <a href="#projects">View projects</a>
+                </div>
+            </aside>
+
+            <form class="contact-form" method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>">
+                <input type="hidden" name="action" value="team_portfolio_contact">
+                <?php wp_nonce_field('team_portfolio_contact', 'contact_nonce'); ?>
+
+                <div class="contact-form-grid">
+                    <label class="contact-field">
+                        <span>First Name</span>
+                        <input type="text" name="first_name" autocomplete="given-name" required>
+                    </label>
+                    <label class="contact-field">
+                        <span>Last Name</span>
+                        <input type="text" name="last_name" autocomplete="family-name" required>
+                    </label>
+                    <label class="contact-field">
+                        <span>Email</span>
+                        <input type="email" name="email" autocomplete="email" required>
+                    </label>
+                    <label class="contact-field">
+                        <span>Phone Number <small>(optional)</small></span>
+                        <input type="tel" name="phone" autocomplete="tel">
+                    </label>
+                </div>
+
+                <fieldset class="contact-subject">
+                    <legend>Select Subject</legend>
+                    <label><input type="radio" name="subject" value="General inquiry" checked> General inquiry</label>
+                    <label><input type="radio" name="subject" value="Project collaboration"> Project collaboration</label>
+                    <label><input type="radio" name="subject" value="Portfolio feedback"> Portfolio feedback</label>
+                    <label><input type="radio" name="subject" value="Other"> Other</label>
+                </fieldset>
+
+                <label class="contact-field contact-message">
+                    <span>Message</span>
+                    <textarea name="message" rows="3" placeholder="Write your message..." required></textarea>
+                </label>
+
+                <button type="submit" class="contact-submit">Send Message</button>
+            </form>
         </div>
 
     </div>

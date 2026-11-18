@@ -12,7 +12,7 @@ function team_portfolio_styles() {
         'team-portfolio-style',
         get_stylesheet_uri(),
         array(),
-        '1.1'
+        filemtime(get_stylesheet_directory() . '/style.css')
     );
 }
 add_action('wp_enqueue_scripts', 'team_portfolio_styles');
@@ -24,10 +24,12 @@ function team_portfolio_get_members() {
     return array(
         'member-1' => array(
             'id'          => 'member-1',
-            'name'        => 'Pabolario Sandrick Jan',
+            'name'        => 'Pabulario Sandrick Jan',
             'role'        => 'PM/Project manager',
-            'image'       => 'pabolario.jpg',
-            'placeholder' => 'https://placehold.co/400x450/6842a6/ffffff?text=Pabolario+Sandrick+Jan',
+            'image'       => 'member P.png',
+            'theme'       => 'army',
+            'interest'    => 'Army inspired',
+            'placeholder' => 'https://placehold.co/400x450/6842a6/ffffff?text=Pabulario+Sandrick+Jan',
             'description' => 'I lead our team and develop innovative web and mobile applications.',
             'skills'      => array('HTML', 'CSS', 'JavaScript', 'PHP', 'Laravel'),
             'email'       => 'Sandrickjanpabulario@gmail.com'
@@ -36,7 +38,9 @@ function team_portfolio_get_members() {
             'id'          => 'member-2',
             'name'        => 'Dayanan Archie',
             'role'        => 'Technical Writer',
-            'image'       => 'dayanan.jpg',
+            'image'       => 'member D.png',
+            'theme'       => 'volleyball',
+            'interest'    => 'Volleyball',
             'placeholder' => 'https://placehold.co/400x450/21133f/ffffff?text=Dayanan+Archie',
             'description' => 'I create beautiful, accessible, and user-friendly website designs.',
             'skills'      => array('Figma', 'UI Design', 'UX Research', 'CSS'),
@@ -46,7 +50,9 @@ function team_portfolio_get_members() {
             'id'          => 'member-3',
             'name'        => 'Fernandez Nathaniel',
             'role'        => 'System Analyst',
-            'image'       => 'fernandez.jpg',
+            'image'       => 'member F.jpg',
+            'theme'       => 'gaming',
+            'interest'    => 'Online gaming',
             'placeholder' => 'https://placehold.co/400x450/9470d3/ffffff?text=Fernandez+Nathaniel',
             'description' => 'I build responsive websites and interactive user experiences.',
             'skills'      => array('HTML', 'CSS', 'JavaScript', 'React'),
@@ -56,7 +62,9 @@ function team_portfolio_get_members() {
             'id'          => 'member-4',
             'name'        => 'Quimanhan Jan Alexis',
             'role'        => 'Programmer',
-            'image'       => 'quimanhan.jpg',
+            'image'       => 'member Q.png',
+            'theme'       => 'gaming-volleyball',
+            'interest'    => 'Gaming + volleyball',
             'placeholder' => 'https://placehold.co/400x450/49306e/ffffff?text=Quimanhan+Jan+Alexis',
             'description' => 'I develop backend systems, APIs, and database solutions.',
             'skills'      => array('PHP', 'Laravel', 'MySQL', 'Database Design'),
@@ -161,3 +169,56 @@ function team_portfolio_template_routing($template) {
     return $template;
 }
 add_filter('template_include', 'team_portfolio_template_routing', 99);
+
+function team_portfolio_handle_contact_form() {
+    $posted_value = static function ($key) {
+        return isset($_POST[$key]) && is_string($_POST[$key])
+            ? wp_unslash($_POST[$key])
+            : '';
+    };
+
+    $nonce = sanitize_text_field($posted_value('contact_nonce'));
+
+    if (!$nonce || !wp_verify_nonce($nonce, 'team_portfolio_contact')) {
+        wp_die('Your contact form session expired. Please go back and try again.', 'Contact form error', array('response' => 403));
+    }
+
+    $first_name = sanitize_text_field($posted_value('first_name'));
+    $last_name  = sanitize_text_field($posted_value('last_name'));
+    $email      = sanitize_email($posted_value('email'));
+    $phone      = sanitize_text_field($posted_value('phone'));
+    $subject    = sanitize_text_field($posted_value('subject'));
+    $message    = sanitize_textarea_field($posted_value('message'));
+    $subjects   = array('General inquiry', 'Project collaboration', 'Portfolio feedback', 'Other');
+
+    if ($first_name === '' || $last_name === '' || !is_email($email) || $message === '') {
+        wp_die('Please provide your name, a valid email address, and a message.', 'Contact form error', array('response' => 400));
+    }
+    if (!in_array($subject, $subjects, true)) {
+        $subject = 'General inquiry';
+    }
+
+    $name = trim($first_name . ' ' . $last_name);
+    $body = "From: {$name}\nEmail: {$email}\n";
+    if ($phone !== '') {
+        $body .= "Phone: {$phone}\n";
+    }
+    $body .= "\nSubject: {$subject}\n\n{$message}";
+
+    $sent = wp_mail(
+        'TEAMUNCHAKA@gmail.com',
+        'Portfolio contact: ' . $subject,
+        $body,
+        array('Reply-To: ' . $name . ' <' . $email . '>')
+    );
+
+    if (!$sent) {
+        wp_die('Your message could not be sent right now. Please email janalexisquimanhan@gmail.com directly.', 'Contact form error', array('response' => 500));
+    }
+
+    $redirect_url = add_query_arg('contact', 'sent', team_portfolio_get_portfolio_url());
+    wp_safe_redirect($redirect_url . '#contact');
+    exit;
+}
+add_action('admin_post_team_portfolio_contact', 'team_portfolio_handle_contact_form');
+add_action('admin_post_nopriv_team_portfolio_contact', 'team_portfolio_handle_contact_form');

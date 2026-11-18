@@ -5,13 +5,15 @@ Template Name: Individual Member Portfolio
 
 get_header();
 
-$members = function_exists('team_portfolio_get_members') ? team_portfolio_get_members() : array(
+$members = array(
     'member-1' => array(
         'id'          => 'member-1',
-        'name'        => 'Pabolario Sandrick Jan',
+        'name'        => 'Pabulario Sandrick Jan',
         'role'        => 'PM/Project manager',
-        'image'       => 'pabolario.jpg',
-        'placeholder' => 'https://placehold.co/400x450/6842a6/ffffff?text=Pabolario+Sandrick+Jan',
+        'image'       => 'pabulario.png',
+        'theme'       => 'army',
+        'interest'    => 'Army inspired',
+        'placeholder' => 'https://placehold.co/400x450/6842a6/ffffff?text=Pabulario+Sandrick+Jan',
         'description' => 'I lead our team and develop innovative web and mobile applications.',
         'skills'      => array('HTML', 'CSS', 'JavaScript', 'PHP', 'Laravel'),
         'email'       => 'Sandrickjanpabulario@gmail.com'
@@ -20,17 +22,21 @@ $members = function_exists('team_portfolio_get_members') ? team_portfolio_get_me
         'id'          => 'member-2',
         'name'        => 'Dayanan Archie',
         'role'        => 'Technical Writer',
-        'image'       => 'dayanan.jpg',
+        'image'       => 'dayanan.png',
+        'theme'       => 'volleyball',
+        'interest'    => 'Volleyball',
         'placeholder' => 'https://placehold.co/400x450/21133f/ffffff?text=Dayanan+Archie',
-        'description' => 'I create beautiful, accessible, and user-friendly website designs.',
-        'skills'      => array('Figma', 'UI Design', 'UX Research', 'CSS'),
+        'description' => 'I create and working for our papers',
+        'skills'      => 'good at writing in papers',
         'email'       => 'occ.daynan.archie@gmail.com'
     ),
     'member-3' => array(
         'id'          => 'member-3',
         'name'        => 'Fernandez Nathaniel',
         'role'        => 'System Analyst',
-        'image'       => 'fernandez.jpg',
+        'image'       => 'fernandez.png',
+        'theme'       => 'gaming',
+        'interest'    => 'Online gaming',
         'placeholder' => 'https://placehold.co/400x450/9470d3/ffffff?text=Fernandez+Nathaniel',
         'description' => 'I build responsive websites and interactive user experiences.',
         'skills'      => array('HTML', 'CSS', 'JavaScript', 'React'),
@@ -40,7 +46,9 @@ $members = function_exists('team_portfolio_get_members') ? team_portfolio_get_me
         'id'          => 'member-4',
         'name'        => 'Quimanhan Jan Alexis',
         'role'        => 'Programmer',
-        'image'       => 'quimanhan.jpg',
+        'image'       => 'quimanhan.png',
+        'theme'       => 'gaming-volleyball',
+        'interest'    => 'Gaming + volleyball',
         'placeholder' => 'https://placehold.co/400x450/49306e/ffffff?text=Quimanhan+Jan+Alexis',
         'description' => 'I develop backend systems, APIs, and database solutions.',
         'skills'      => array('PHP', 'Laravel', 'MySQL', 'Database Design'),
@@ -67,6 +75,7 @@ $slug_map = array(
     '2' => 'member-2',
     '3' => 'member-3',
     '4' => 'member-4',
+    'pabulario' => 'member-1',
     'pabolario' => 'member-1',
     'dayanan' => 'member-2',
     'fernandez' => 'member-3',
@@ -90,53 +99,64 @@ $member = $members[$slug];
 // Image fallback
 $img_file = get_template_directory() . '/images/' . $member['image'];
 $img_url  = file_exists($img_file)
-    ? get_template_directory_uri() . '/images/' . $member['image']
+    ? get_template_directory_uri() . '/images/' . rawurlencode($member['image']) . '?v=2'
     : ($member['placeholder'] ?? 'https://placehold.co/400x450/6842a6/ffffff?text=' . urlencode($member['name']));
 ?>
 
-<section class="individual-hero">
+<section class="individual-hero individual-hero--<?php echo esc_attr($member['theme'] ?? 'default'); ?>">
 
     <div class="container individual-grid">
 
         <div class="individual-text">
 
-            <p class="member-label">MEET OUR TEAM MEMBER</p>
+            <p class="member-label"><span></span> MEET THE TEAM</p>
 
-            <!-- Member Switcher Tabs -->
-            <div class="member-nav-tabs">
+            <div class="member-nav-tabs" role="navigation" aria-label="Choose a team member">
                 <?php foreach ($members as $m_id => $m_data) :
                     $tab_url = function_exists('team_portfolio_get_member_url')
                         ? team_portfolio_get_member_url($m_id)
                         : add_query_arg('member', $m_id, home_url('/?view=member'));
                     $is_active = ($m_id === $slug) ? 'active' : '';
                 ?>
-                    <a href="<?php echo esc_url($tab_url); ?>" class="<?php echo esc_attr($is_active); ?>">
+                    <a href="<?php echo esc_url($tab_url); ?>"
+                       class="<?php echo esc_attr($is_active); ?>"
+                       <?php echo $m_id === $slug ? 'aria-current="page"' : ''; ?>>
                         <?php echo esc_html($m_data['name']); ?>
                     </a>
                 <?php endforeach; ?>
             </div>
 
             <h1>
-                Hi, I'm <span><?php echo esc_html($member['name']); ?></span>
+                Hi, I’m<br>
+                <span><?php echo esc_html($member['name']); ?></span>
             </h1>
 
-            <h3><?php echo esc_html($member['role']); ?></h3>
+            <h3 class="individual-role"><?php echo esc_html($member['role']); ?></h3>
 
-            <p><?php echo esc_html($member['description']); ?></p>
+            <p class="individual-description"><?php echo esc_html($member['description']); ?></p>
 
-            <a href="<?php echo esc_url('mailto:' . $member['email']); ?>"
-               class="btn">
-                Contact Me →
-            </a>
+            <div class="individual-actions">
+                <a href="<?php echo esc_url('mailto:' . $member['email']); ?>"
+                   class="btn">
+                    Contact Me <span aria-hidden="true">→</span>
+                </a>
+                <span class="individual-email"><?php echo esc_html($member['email']); ?></span>
+            </div>
 
         </div>
 
         <div class="individual-photo">
 
-            <img
-                src="<?php echo esc_url($img_url); ?>"
-                alt="<?php echo esc_attr($member['name']); ?>"
-            >
+            <div class="individual-photo-frame">
+                <img
+                    src="<?php echo esc_url($img_url); ?>"
+                    alt="<?php echo esc_attr($member['name']); ?>"
+                >
+                <div class="photo-caption">
+                    <span class="photo-caption-dot"></span>
+                    <span><?php echo esc_html($member['interest'] ?? 'TEAM UNCHAKA'); ?></span>
+                </div>
+            </div>
 
         </div>
 
@@ -155,9 +175,12 @@ $img_url  = file_exists($img_file)
 
         <div class="skills-grid">
 
-            <?php foreach ($member['skills'] as $skill) : ?>
+            <?php foreach ($member['skills'] as $index => $skill) : ?>
 
                 <div class="skill-card">
+                    <span class="skill-number">
+                        <?php echo esc_html(str_pad((string) ($index + 1), 2, '0', STR_PAD_LEFT)); ?>
+                    </span>
                     <h3><?php echo esc_html($skill); ?></h3>
                 </div>
 
@@ -180,19 +203,23 @@ $img_url  = file_exists($img_file)
 
         <div class="project-grid">
 
-            <div class="project-card">
+            <article class="project-card">
                 <div class="project-info">
+                    <span class="project-number">01 / FEATURED</span>
                     <h3>Portfolio Project</h3>
                     <p>A project showcasing my development and design skills.</p>
                 </div>
-            </div>
+                <span class="project-arrow" aria-hidden="true">↗</span>
+            </article>
 
-            <div class="project-card">
+            <article class="project-card">
                 <div class="project-info">
+                    <span class="project-number">02 / COLLABORATION</span>
                     <h3>Team Project</h3>
                     <p>A collaborative project created with our team.</p>
                 </div>
-            </div>
+                <span class="project-arrow" aria-hidden="true">↗</span>
+            </article>
 
         </div>
 
@@ -200,8 +227,8 @@ $img_url  = file_exists($img_file)
 
 </section>
 
-<div class="container" style="text-align:center; padding:40px 0;">
-    <a href="<?php echo esc_url(home_url('/#members')); ?>" class="btn">
+<div class="individual-back container">
+    <a href="<?php echo esc_url(home_url('/#members')); ?>" class="btn btn-outline">
         ← Back to Our Team
     </a>
 </div>
