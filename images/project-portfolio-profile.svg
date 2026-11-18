@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" aria-labelledby="title">
+  <title id="title">Sample individual portfolio page</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#21133f"/><stop offset="1" stop-color="#49306e"/></linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#d2baff"/><stop offset="1" stop-color="#8f6dd6"/></linearGradient>
+  </defs>
+  <rect width="960" height="540" fill="url(#bg)"/>
+  <rect x="72" y="48" width="816" height="444" rx="20" fill="#171025" stroke="#b99aff" stroke-opacity=".55" stroke-width="2"/>
+  <rect x="72" y="48" width="816" height="60" rx="20" fill="#302047"/>
+  <path d="M72 88h816v20H72z" fill="#302047"/>
+  <text x="108" y="86" fill="#fff" font-family="Arial,sans-serif" font-size="21" font-weight="700">MEMBER PORTFOLIO</text>
+  <text x="112" y="174" fill="#fff" font-family="Arial,sans-serif" font-size="34" font-weight="700">Hi, I'm</text>
+  <text x="112" y="218" fill="#d2baff" font-family="Arial,sans-serif" font-size="38" font-weight="700">A Team Developer</text>
+  <rect x="112" y="244" width="156" height="30" rx="15" fill="#6842a6"/>
+  <text x="132" y="264" fill="#fff" font-family="Arial,sans-serif" font-size="13">Web Developer</text>
+  <rect x="112" y="303" width="390" height="9" rx="4" fill="#fff" opacity=".48"/>
+  <rect x="112" y="326" width="350" height="9" rx="4" fill="#fff" opacity=".25"/>
+  <rect x="112" y="349" width="300" height="9" rx="4" fill="#fff" opacity=".25"/>
+  <rect x="112" y="394" width="144" height="42" rx="21" fill="url(#accent)"/>
+  <rect x="627" y="130" width="190" height="328" rx="90" fill="#302247" stroke="#d2baff" stroke-opacity=".5" stroke-width="2"/>
+  <circle cx="722" cy="228" r="53" fill="url(#accent)"/>
+  <rect x="673" y="306" width="98" height="10" rx="5" fill="#fff" opacity=".65"/>
+  <rect x="684" y="330" width="76" height="8" rx="4" fill="#fff" opacity=".25"/>
+  <text x="728" y="468" fill="#d2baff" font-family="Arial,sans-serif" font-size="12" letter-spacing="2">SAMPLE EXAMPLE</text>
+</svg>

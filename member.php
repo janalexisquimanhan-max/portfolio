@@ -10,6 +10,9 @@ $members = array(
         'id'          => 'member-1',
         'name'        => 'Pabulario Sandrick Jan',
         'role'        => 'PM/Project manager',
+        'location'    => '',
+        'age'         => '21',
+        'gender'      => '',
         'image'       => 'pabulario.png',
         'theme'       => 'army',
         'interest'    => 'Army inspired',
@@ -22,11 +25,14 @@ $members = array(
         'id'          => 'member-2',
         'name'        => 'Dayanan Archie',
         'role'        => 'Technical Writer',
+        'location'    => '',
+        'age'         => '',
+        'gender'      => '',
         'image'       => 'dayanan.png',
         'theme'       => 'volleyball',
         'interest'    => 'Volleyball',
         'placeholder' => 'https://placehold.co/400x450/21133f/ffffff?text=Dayanan+Archie',
-        'description' => 'I create and working for our papers',
+        'description' => 'I create and work on our technical papers.',
         'skills'      => 'good at writing in papers',
         'email'       => 'occ.daynan.archie@gmail.com'
     ),
@@ -34,11 +40,14 @@ $members = array(
         'id'          => 'member-3',
         'name'        => 'Fernandez Nathaniel',
         'role'        => 'System Analyst',
+        'location'    => '',
+        'age'         => '',
+        'gender'      => '',
         'image'       => 'fernandez.png',
         'theme'       => 'gaming',
         'interest'    => 'Online gaming',
         'placeholder' => 'https://placehold.co/400x450/9470d3/ffffff?text=Fernandez+Nathaniel',
-        'description' => 'I build responsive websites and interactive user experiences.',
+        'description' => 'I make the blueprint of our project and also i work for the backend.',
         'skills'      => array('HTML', 'CSS', 'JavaScript', 'React'),
         'email'       => 'occ.fernandez.nathaniel@example.com'
     ),
@@ -46,11 +55,14 @@ $members = array(
         'id'          => 'member-4',
         'name'        => 'Quimanhan Jan Alexis',
         'role'        => 'Programmer',
+        'location'    => '',
+        'age'         => '',
+        'gender'      => '',
         'image'       => 'quimanhan.png',
         'theme'       => 'gaming-volleyball',
         'interest'    => 'Gaming + volleyball',
         'placeholder' => 'https://placehold.co/400x450/49306e/ffffff?text=Quimanhan+Jan+Alexis',
-        'description' => 'I develop backend systems, APIs, and database solutions.',
+        'description' => 'I develop the application and the backend of our project and also the database.',
         'skills'      => array('PHP', 'Laravel', 'MySQL', 'Database Design'),
         'email'       => 'janalexisquimanhan@gmail.com'
     )
@@ -133,7 +145,31 @@ $img_url  = file_exists($img_file)
 
             <h3 class="individual-role"><?php echo esc_html($member['role']); ?></h3>
 
-            <p class="individual-description"><?php echo esc_html($member['description']); ?></p>
+            <div class="individual-about">
+                <h2>About Me</h2>
+                <p class="individual-description"><?php echo esc_html($member['description']); ?></p>
+            </div>
+
+            <?php
+            $member_details = array(
+                'Location' => isset($member['location']) ? trim((string) $member['location']) : '',
+                'Age'      => isset($member['age']) ? trim((string) $member['age']) : '',
+                'Gender'   => isset($member['gender']) ? trim((string) $member['gender']) : ''
+            );
+            $member_details = array_filter($member_details, function ($value) {
+                return $value !== '';
+            });
+            ?>
+            <?php if (!empty($member_details)) : ?>
+                <dl class="member-details">
+                    <?php foreach ($member_details as $label => $value) : ?>
+                        <div>
+                            <dt><?php echo esc_html($label); ?></dt>
+                            <dd><?php echo esc_html($value); ?></dd>
+                        </div>
+                    <?php endforeach; ?>
+                </dl>
+            <?php endif; ?>
 
             <div class="individual-actions">
                 <a href="<?php echo esc_url('mailto:' . $member['email']); ?>"

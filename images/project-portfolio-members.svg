@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" aria-labelledby="title">
+  <title id="title">Sample team members page</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#21133f"/><stop offset="1" stop-color="#6842a6"/></linearGradient>
+    <linearGradient id="accent"><stop stop-color="#d2baff"/><stop offset="1" stop-color="#9b74e8"/></linearGradient>
+  </defs>
+  <rect width="960" height="540" fill="url(#bg)"/>
+  <rect x="74" y="52" width="812" height="436" rx="20" fill="#171025" stroke="#b99aff" stroke-opacity=".55" stroke-width="2"/>
+  <rect x="74" y="52" width="812" height="66" rx="20" fill="#302047"/>
+  <path d="M74 98h812v20H74z" fill="#302047"/>
+  <text x="110" y="94" fill="#fff" font-family="Arial,sans-serif" font-size="22" font-weight="700">MEET THE TEAM</text>
+  <text x="110" y="154" fill="#d2baff" font-family="Arial,sans-serif" font-size="13" letter-spacing="2">FOUR PEOPLE. ONE TEAM.</text>
+  <g fill="#302247">
+    <rect x="110" y="180" width="166" height="270" rx="14"/><rect x="294" y="180" width="166" height="270" rx="14"/>
+    <rect x="478" y="180" width="166" height="270" rx="14"/><rect x="662" y="180" width="184" height="270" rx="14"/>
+  </g>
+  <g>
+    <circle cx="193" cy="266" r="44" fill="url(#accent)"/><circle cx="377" cy="266" r="44" fill="#a2e8de"/>
+    <circle cx="561" cy="266" r="44" fill="#f0a8d8"/><circle cx="754" cy="266" r="44" fill="#c7a6ff"/>
+  </g>
+  <g fill="#fff" opacity=".8">
+    <rect x="135" y="337" width="116" height="10" rx="5"/><rect x="319" y="337" width="116" height="10" rx="5"/>
+    <rect x="503" y="337" width="116" height="10" rx="5"/><rect x="696" y="337" width="116" height="10" rx="5"/>
+  </g>
+  <g fill="#fff" opacity=".25">
+    <rect x="148" y="361" width="90" height="7" rx="3"/><rect x="332" y="361" width="90" height="7" rx="3"/>
+    <rect x="516" y="361" width="90" height="7" rx="3"/><rect x="709" y="361" width="90" height="7" rx="3"/>
+  </g>
+  <text x="728" y="468" fill="#d2baff" font-family="Arial,sans-serif" font-size="12" letter-spacing="2">SAMPLE EXAMPLE</text>
+</svg>

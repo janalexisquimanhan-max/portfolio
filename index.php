@@ -187,59 +187,134 @@
             <p>Explore some of the recent systems and applications we have engineered</p>
         </div>
 
+        <?php
+        $projects = array(
+            array(
+                'id' => 'team-portfolio-hub',
+                'category' => 'Web Application',
+                'title' => 'Team Portfolio Hub',
+                'description' => 'A full-featured team portfolio web portal featuring dynamic routing, individual member showcases, interactive 3D landing experiences, and responsive multi-device design.',
+                'image' => 'project-portfolio-preview.svg',
+                'gallery' => array(
+                    array('image' => 'project-portfolio-preview.svg', 'caption' => 'Portfolio dashboard example'),
+                    array('image' => 'project-portfolio-members.svg', 'caption' => 'Team members page example'),
+                    array('image' => 'project-portfolio-profile.svg', 'caption' => 'Individual portfolio page example')
+                ),
+                'technologies' => array('WordPress', 'PHP', 'CSS3')
+            ),
+            array(
+                'id' => 'management-analytics',
+                'category' => 'Database System',
+                'title' => 'Management & Analytics System',
+                'description' => 'A comprehensive system developed to solve real-world organizational tracking, database optimization, and operational reporting with role-based access.',
+                'image' => 'project-analytics-preview.svg',
+                'gallery' => array(
+                    array('image' => 'project-analytics-preview.svg', 'caption' => 'Analytics dashboard example'),
+                    array('image' => 'project-analytics-records.svg', 'caption' => 'Records management page example'),
+                    array('image' => 'project-analytics-report.svg', 'caption' => 'Performance report example')
+                ),
+                'technologies' => array('MySQL', 'PHP', 'System Analysis')
+            ),
+            array(
+                'id' => 'interactive-digital-solution',
+                'category' => 'Collaborative Platform',
+                'title' => 'Interactive Digital Solution',
+                'description' => 'A creative multi-user project demonstrating collaborative frontend design, agile project management, and clean technical documentation.',
+                'image' => 'project-platform-preview.svg',
+                'gallery' => array(
+                    array('image' => 'project-platform-preview.svg', 'caption' => 'Collaborative workspace example'),
+                    array('image' => 'project-platform-board.svg', 'caption' => 'Team task board example'),
+                    array('image' => 'project-platform-chat.svg', 'caption' => 'Team messaging page example')
+                ),
+                'technologies' => array('JavaScript', 'UI/UX', 'Agile')
+            )
+        );
+        ?>
+
         <div class="project-grid">
-
-            <div class="project-card">
-                <div class="project-card-header">
-                    <span class="project-tag">Web Application</span>
-                    <h3>Team Portfolio Hub</h3>
-                </div>
-                <p>
-                    A full-featured team portfolio web portal featuring dynamic routing, individual member showcases,
-                    interactive 3D landing experiences, and responsive multi-device design.
-                </p>
-                <div class="project-tech">
-                    <span>WordPress</span>
-                    <span>PHP</span>
-                    <span>CSS3</span>
-                </div>
-            </div>
-
-            <div class="project-card">
-                <div class="project-card-header">
-                    <span class="project-tag">Database System</span>
-                    <h3>Management & Analytics System</h3>
-                </div>
-                <p>
-                    A comprehensive system developed to solve real-world organizational tracking, database optimization,
-                    and operational reporting with role-based access.
-                </p>
-                <div class="project-tech">
-                    <span>MySQL</span>
-                    <span>PHP</span>
-                    <span>System Analysis</span>
-                </div>
-            </div>
-
-            <div class="project-card">
-                <div class="project-card-header">
-                    <span class="project-tag">Collaborative Platform</span>
-                    <h3>Interactive Digital Solution</h3>
-                </div>
-                <p>
-                    A creative multi-user project demonstrating collaborative frontend design, agile project management,
-                    and clean technical documentation.
-                </p>
-                <div class="project-tech">
-                    <span>JavaScript</span>
-                    <span>UI/UX</span>
-                    <span>Agile</span>
-                </div>
-            </div>
-
+            <?php foreach ($projects as $project) : ?>
+                <article class="project-card">
+                    <button class="project-image-button" type="button"
+                            data-open-project-gallery="<?php echo esc_attr($project['id']); ?>"
+                            aria-label="<?php echo esc_attr('View examples for ' . $project['title']); ?>">
+                        <img src="<?php echo esc_url(get_template_directory_uri() . '/images/' . $project['image']); ?>"
+                             alt="">
+                        <span>Sample preview · View project examples <span aria-hidden="true">→</span></span>
+                    </button>
+                    <div class="project-card-content">
+                        <div class="project-card-header">
+                            <span class="project-tag"><?php echo esc_html($project['category']); ?></span>
+                            <h3><?php echo esc_html($project['title']); ?></h3>
+                        </div>
+                        <p><?php echo esc_html($project['description']); ?></p>
+                        <div class="project-tech">
+                            <?php foreach ($project['technologies'] as $technology) : ?>
+                                <span><?php echo esc_html($technology); ?></span>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                </article>
+            <?php endforeach; ?>
         </div>
+
+        <?php foreach ($projects as $project) : ?>
+            <?php $gallery_title_id = 'project-gallery-title-' . $project['id']; ?>
+            <dialog class="project-gallery-dialog" id="project-gallery-<?php echo esc_attr($project['id']); ?>"
+                    data-project-gallery aria-labelledby="<?php echo esc_attr($gallery_title_id); ?>">
+                <div class="project-gallery-header">
+                    <div>
+                        <span class="project-tag"><?php echo esc_html($project['category']); ?> · SAMPLE GALLERY</span>
+                        <h2 id="<?php echo esc_attr($gallery_title_id); ?>"><?php echo esc_html($project['title']); ?></h2>
+                        <p class="project-gallery-description"><?php echo esc_html($project['description']); ?></p>
+                    </div>
+                    <button class="project-gallery-close" type="button" data-close-project-gallery
+                            aria-label="Close project gallery">×</button>
+                </div>
+                <div class="project-gallery-grid">
+                    <?php foreach ($project['gallery'] as $gallery_image) : ?>
+                        <figure class="project-gallery-image">
+                            <img src="<?php echo esc_url(get_template_directory_uri() . '/images/' . $gallery_image['image']); ?>"
+                                 alt="<?php echo esc_attr($gallery_image['caption']); ?>">
+                            <figcaption><?php echo esc_html($gallery_image['caption']); ?></figcaption>
+                        </figure>
+                    <?php endforeach; ?>
+                </div>
+                <div class="project-tech project-gallery-tech">
+                    <?php foreach ($project['technologies'] as $technology) : ?>
+                        <span><?php echo esc_html($technology); ?></span>
+                    <?php endforeach; ?>
+                </div>
+            </dialog>
+        <?php endforeach; ?>
     </div>
 </section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('[data-open-project-gallery]').forEach(function (button) {
+        button.addEventListener('click', function () {
+            var projectId = button.getAttribute('data-open-project-gallery');
+            var gallery = document.getElementById('project-gallery-' + projectId);
+            if (gallery && typeof gallery.showModal === 'function') {
+                gallery.showModal();
+            }
+        });
+    });
+
+    document.querySelectorAll('dialog[data-project-gallery]').forEach(function (gallery) {
+        var closeButton = gallery.querySelector('[data-close-project-gallery]');
+        closeButton.addEventListener('click', function () {
+            gallery.close();
+        });
+
+        gallery.addEventListener('click', function (event) {
+            if (event.target === gallery) {
+                gallery.close();
+            }
+        });
+    });
+});
+</script>
 
 <!-- CONTACT -->
 <section class="section-contact" id="contact">
